@@ -184,7 +184,7 @@ class PlanetOsm:
 
     def __osmosisCall(self,args, input_data):
         devnull = open('/dev/null', 'w')
-        verboseprint(u"osmosis call „" + args + u"“ started, TIME: " + str(datetime.datetime.now()))
+        verboseprint("osmosis call „" + args + "“ started, TIME: " + str(datetime.datetime.now()))
         exe_and_args = shlex.split(osmosis_bin + args)
         p = subprocess.Popen(exe_and_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=devnull)
         output_data = p.communicate(input_data)
@@ -222,7 +222,7 @@ class PlanetOsm:
 
         if root.tag == "osm":
             verboseprint("Detected osm file")
-            verboseprint(u"scanning for existing nodes…")
+            verboseprint("scanning for existing nodes…")
 
             # filling hash table of nodes with existing ones
             for item in root:
@@ -237,7 +237,7 @@ class PlanetOsm:
                     continue
 
                 way_id = item.attrib["id"]
-                verboseprint(u"checking way-id „" + way_id + u"“")
+                verboseprint("checking way-id „" + way_id + "“")
 
                 # loop over way members (nodes)
                 way_has_spatial_information = 0
@@ -294,7 +294,7 @@ class PlanetOsm:
             
             # concatenate outputs into single xml file
             overpass_output = '<?xml version="1.0" encoding="UTF-8"?>\n<osm version="0.6" generator="Overpass API">\n'
-            verboseprint("result from download: " + str(len(overpass_output_array)) + u" batch(es) of nodes á " + str(node_batches) + " Nodes.")
+            verboseprint("result from download: " + str(len(overpass_output_array)) + " batch(es) of nodes á " + str(node_batches) + " Nodes.")
             for item in overpass_output_array :
                 if "<node" in item: #if output not empty (can happen if all nodes are deleted meanwhile)
                     overpass_output_tailcut = item[:-7] # remove last chars ( "</osm>" )
