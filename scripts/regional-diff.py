@@ -263,7 +263,7 @@ class PlanetOsm:
         diff_for_boundary_cut = filtered_diff
         if len(nodes_to_download) > 0:
             # download list nodes_to_download via overpass, in batches of $node_batches (e.g.12K nodes are rejected by server):
-            node_batches = 1000
+            node_batches = 500
             node_batch_counter = 0
             overpass_output_array = []
             while node_batch_counter < len(nodes_to_download):
