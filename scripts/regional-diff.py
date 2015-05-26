@@ -8,7 +8,7 @@ import PyRSS2Gen
 import tempfile
 from lxml import etree
 
-osmosis_bin = "/usr/bin/osmosis"
+osmosis_bin = "/usr/local/bin/osmosis"
 overpass_server_url = "http://overpass-api.de/api/interpreter?data="
 parser = argparse.ArgumentParser(\
                 formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -440,11 +440,11 @@ class PlanetOsm:
                     if item.attrib["changeset"] < min_changeset or min_changeset == -1:
                         min_changeset = item.attrib["changeset"]
                         min_changeset_timestamp = item.attrib["timestamp"]
-                    rss_description += "Modified " + item.tag + ": " + item.attrib["id"] + "<br>"
-                    rss_description += '<a href="http://www.openstreetmap.org/' + item.tag + '/' + item.attrib["id"] + '/history">'
-                    rss_description += 'http://www.openstreetmap.org/' + item.tag + '/' + item.attrib["id"] + '/history</a><br>'
-                    rss_description += '<a href="http://www.openstreetmap.org/changeset/' + item.attrib["changeset"] + '">'
-                    rss_description += 'http://www.openstreetmap.org/changeset/' + item.attrib["changeset"] + '</a><br>'
+                    rss_description += 'Modified %s <a href="http://www.openstreetmap.org/%s/%s/history">%s</a>' % (item.tag, item.tag, item.attrib["id"], item.attrib["id"])
+                    rss_description += ' - Changeset <a href="http://www.openstreetmap.org/changeset/%s">%s</a>' % (item.attrib["changeset"], item.attrib["changeset"])
+                    rss_description += ' (<a href="http://nrenner.github.io/achavi/?changeset=%s">visual diff</a>)' % (item.attrib["changeset"])
+                    rss_description += ' - User <a href="http://www.openstreetmap.org/user/%s">%s</a>' % (item.attrib["user"], item.attrib["user"])
+                    rss_description += '<br>'
                     item_count += 1
         else:
             print ("ERROR: not an osm file")
@@ -454,6 +454,9 @@ class PlanetOsm:
             return
 
         rss_title = "Changes between " + min_changeset_timestamp + " and " + max_changeset_timestamp
+        # The link doesn't make much sense, because it basically takes a random changeset.
+        # This is caused by the arbitrary item definition (grouped by changeset, whatever timespan it covers).
+        # It would make more sense to group changes by day and create a simple overview html site per such item to link to.
         rss_link = "http://www.openstreetmap.org/changeset/" + str(max_changeset)
         rssitems.append(PyRSS2Gen.RSSItem(title = rss_title, link = rss_link, description = rss_description))
         rss = PyRSS2Gen.RSS2(
