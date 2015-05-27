@@ -9,7 +9,7 @@ import tempfile
 from lxml import etree
 
 osmosis_bin = "/usr/local/bin/osmosis"
-overpass_server_url = "http://overpass-api.de/api/interpreter?data="
+overpass_server_url = "http://overpass-api.de/api/interpreter?data=[timeout:100];"
 parser = argparse.ArgumentParser(\
                 formatter_class=argparse.RawDescriptionHelpFormatter,
                 description='Print report of all modified ways and relations \
